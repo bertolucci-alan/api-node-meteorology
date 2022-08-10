@@ -1,4 +1,4 @@
-import { SetupServer } from "../src/server";
+import { SetupServer } from "@src/server";
 import supertest from "supertest";
 
 beforeAll(() => {
