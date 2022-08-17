@@ -1,20 +1,31 @@
 import { StormGlass } from '@src/clients/stormGlass';
-import axios, { Axios } from 'axios';
+import * as HTTPUtil from '@src/util/request/request';
 import stormGlassWeather3HoursFixture from '@test/fixtures/stormGlass_weather_3_hours.json';
 import stormGlassNormalized3HoursFixture from '@test/fixtures/stormGlass_normalized_response_3_hours.json';
 
-jest.mock('axios');
+jest.mock('@src/util/request/request');
 
 describe('StormGlass cliente', () => {
   //mockando axios, "as" forçando typescript a inferir os tipos do jest junto com os tipos do axios
-  const mockedAxios = axios as jest.Mocked<typeof axios>;
+  // const mockedAxios = axios as jest.Mocked<typeof axios>;
+
+  //não possui typeof porque o request é uma instancia da classe
+  const mockedRequest = new HTTPUtil.Request() as jest.Mocked<HTTPUtil.Request>;
+
+  //mockando método static
+  const MockedRequestClass = HTTPUtil.Request as jest.Mocked<
+    typeof HTTPUtil.Request
+  >;
+
   it('should return the normalize forecast from the StormGlass service', async () => {
     const lat = -33.792726;
     const lng = 151.289824;
 
-    mockedAxios.get.mockResolvedValue({ data: stormGlassWeather3HoursFixture });
+    mockedRequest.get.mockResolvedValue({
+      data: stormGlassWeather3HoursFixture,
+    } as HTTPUtil.Response);
 
-    const stormGlass = new StormGlass(mockedAxios);
+    const stormGlass = new StormGlass(mockedRequest);
     const response = await stormGlass.fetchPoints(lat, lng);
     expect(response).toEqual(stormGlassNormalized3HoursFixture);
   });
@@ -31,8 +42,10 @@ describe('StormGlass cliente', () => {
       ],
     };
 
-    mockedAxios.get.mockResolvedValue({ data: incompleteResponse });
-    const stormGlass = new StormGlass(mockedAxios);
+    mockedRequest.get.mockResolvedValue({
+      data: incompleteResponse,
+    } as HTTPUtil.Response);
+    const stormGlass = new StormGlass(mockedRequest);
     const response = await stormGlass.fetchPoints(lat, lng);
     expect(response).toEqual([]);
   });
@@ -41,8 +54,8 @@ describe('StormGlass cliente', () => {
     const lat = -33.792726;
     const lng = 151.289824;
 
-    mockedAxios.get.mockRejectedValue({ message: 'Network Error' });
-    const stormGlass = new StormGlass(mockedAxios);
+    mockedRequest.get.mockRejectedValue({ message: 'Network Error' });
+    const stormGlass = new StormGlass(mockedRequest);
     //passing the promise to the expect
     await expect(stormGlass.fetchPoints(lat, lng)).rejects.toThrow(
       'Unexpected error when trying to communicate to StormGlass: Network Error'
@@ -53,14 +66,17 @@ describe('StormGlass cliente', () => {
     const lat = -33.792726;
     const lng = 151.289824;
 
-    mockedAxios.get.mockRejectedValue({
+    //retornado que o erro é um erro de request
+    MockedRequestClass.isRequest.mockReturnValue(true);
+
+    mockedRequest.get.mockRejectedValue({
       response: {
         status: 429,
         data: { errors: ['Rate Limit reached'] },
       },
     });
 
-    const stormGlass = new StormGlass(mockedAxios);
+    const stormGlass = new StormGlass(mockedRequest);
     await expect(stormGlass.fetchPoints(lat, lng)).rejects.toThrow(
       'Unexpected error returned by the StormGlass service: Error: {"errors":["Rate Limit reached"]} Code: 429'
     );

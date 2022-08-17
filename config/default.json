@@ -1,5 +1,8 @@
 {
     "App": {
+        "database": {
+            "mongoUrl": "mongodb://localhost:2701/surf-forecast"
+        },
         "resources": {
             "StormGlass": {
                 "apiUrl": "http://api.stormglass.io/v2",
