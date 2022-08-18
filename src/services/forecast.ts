@@ -2,7 +2,7 @@ import { StormGlass } from '@src/clients/stormGlass';
 import { ForecastPoint } from '@src/clients/types/ForecastPoint';
 import { AxiosError } from 'axios';
 import { ForecastProcessingInternalError } from './errors/ForecastProcessingInternalError';
-import { IBeach } from './types/IBeaches';
+import { IBeach } from '../models/beach';
 import { ITimeForecast } from './types/ITimeForecast';
 
 export interface IBeachForecast extends Omit<IBeach, 'user'>, ForecastPoint {}
