@@ -1,7 +1,7 @@
 {
     "App": {
         "database": {
-            "mongoUrl": "mongodb://localhost:2701/surf-forecast"
+            "mongoUrl": "mongodb+srv://bertoluccialan:bertoluccialan2326@cluster0.2oilsdr.mongodb.net/?retryWrites=true&w=majority"
         },
         "resources": {
             "StormGlass": {
