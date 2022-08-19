@@ -1,11 +1,29 @@
 import { User } from '@src/models/user';
+import AuthService from '@src/services/auth';
 
 describe('Users functional test', () => {
   beforeEach(async () => {
     await User.deleteMany({});
   });
   describe('When create a new user', () => {
-    it('should sucessfully create a new user', async () => {
+    it('should successfully create a new user with encrypted password', async () => {
+      const newUser = {
+        name: 'Alan',
+        email: 'alan@gmail.com',
+        password: '123',
+      };
+      const response = await global.testRequest.post('/users').send(newUser);
+      expect(response.status).toBe(201);
+      //expect boolean in promise
+      await expect(
+        AuthService.comparePassword(newUser.password, response.body.password)
+      ).resolves.toBeTruthy();
+      expect(response.body).toEqual(
+        expect.objectContaining({ ...newUser, password: expect.any(String) })
+      );
+    });
+
+    it('should successfully create a new user', async () => {
       const newUser = {
         name: 'teste',
         email: 'teste@gmail.com',
@@ -13,7 +31,9 @@ describe('Users functional test', () => {
       };
       const response = await global.testRequest.post('/users').send(newUser);
       expect(response.status).toBe(201);
-      expect(response.body).toEqual(expect.objectContaining(newUser));
+      expect(response.body).toEqual(
+        expect.objectContaining({ ...newUser, password: expect.any(String) })
+      );
     });
 
     it('shoul return 422 there is a validation error', async () => {
