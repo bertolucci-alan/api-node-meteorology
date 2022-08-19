@@ -7,7 +7,11 @@ export interface IUser {
   password: string;
 }
 
-export interface IUserModel extends Omit<IUser, '_id'>, Document {}
+export enum CUSTOM_VALIDATION {
+  DUPLICATED = 'DUPLICATED',
+}
+
+interface IUserModel extends Omit<IUser, '_id'>, Document {}
 
 const schema = new mongoose.Schema(
   {
@@ -29,8 +33,17 @@ const schema = new mongoose.Schema(
     },
   }
 );
+//custom validated email error
+schema.path('email').validate(
+  async (email: string) => {
+    const emailCount = await mongoose.models.User.countDocuments({ email });
+    return !emailCount;
+  },
+  'already exists in the database.',
+  CUSTOM_VALIDATION.DUPLICATED
+);
 
 export const User: Model<IUserModel> = mongoose.model<IUserModel>(
-  'user',
+  'User',
   schema
 );
