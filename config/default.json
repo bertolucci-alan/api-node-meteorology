@@ -4,6 +4,10 @@
         "database": {
             "mongoUrl": "mongodb+srv://bertoluccialan:bertoluccialan2326@cluster0.2oilsdr.mongodb.net/?retryWrites=true&w=majority"
         },
+        "auth": {
+            "key": "some-key",
+            "tokenExpiresIn": 3600
+        },
         "resources": {
             "StormGlass": {
                 "apiUrl": "http://api.stormglass.io/v2",
