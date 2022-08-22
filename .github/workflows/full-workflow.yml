@@ -43,6 +43,6 @@ jobs:
         uses: akhileshns/heroku-deploy@v3.12.12
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: 'peaceful-plateau-04699'
-          heroku_email: 'waldemarnt@gmail.com'
+          heroku_app_name: 'alan-surf-forecast'
+          heroku_email: 'bertoluccialan23@gmail.com'
           buildpack: 'https://github.com/zidizei/heroku-buildpack-tsc#v2.0'
