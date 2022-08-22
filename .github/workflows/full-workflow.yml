@@ -9,3 +9,40 @@ on:
     branches:
       - master
       - develop
+
+jobs:
+  build:
+    runs-on: windows
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+        mongodb-version: [4.2]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Start MongoDB
+        uses: supercharge/mongodb-github-action@1.1.0
+        with:
+          mongodb-version: ${{ matrix.mongodb-version }}
+
+      - name: Install dependencies
+        run: yarn --frozen-lockfile
+
+      - name: Run all tests
+        run: yarn test
+
+      - name: Deploy application
+        if: ${{ github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main' }}
+        uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: 'peaceful-plateau-04699'
+          heroku_email: 'bertoluccialan23@gmail.com'
+          buildpack: 'https://github.com/zidizei/heroku-buildpack-tsc#v2.0'
