@@ -6,6 +6,7 @@ import { Application } from 'express';
 import * as database from '@src/database';
 import { BeachController } from './controllers/BeachController';
 import { UserController } from './controllers/UserController';
+import config from 'config';
 
 export class SetupServer extends Server {
   constructor(private port = 3333) {
@@ -42,7 +43,7 @@ export class SetupServer extends Server {
   }
 
   public start(): void {
-    this.app.listen(this.port, () =>
+    this.app.listen(this.port || config.get('App.port'), () =>
       console.info(`Server is running at localhost:${this.port}`)
     );
   }
