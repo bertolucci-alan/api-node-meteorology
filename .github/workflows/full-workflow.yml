@@ -39,6 +39,13 @@ jobs:
       - name: Run all tests
         run: yarn test
 
+      # - shell: bash
+      #   if: github.ref == 'refs/heads/master'
+      #   name: Create SSH deployment key
+      #   env:
+      #     SSH_KEY: ${{ secrets.SHH_PRIVATE_KEY }}
+      #   run: ./scripts/deploy.sh
+
       - name: Deploy application
         if: ${{ github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main' }}
         uses: akhileshns/heroku-deploy@v3.12.12
