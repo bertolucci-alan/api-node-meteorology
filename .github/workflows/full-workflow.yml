@@ -12,7 +12,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-latest
 
     strategy:
       matrix:
@@ -44,5 +44,5 @@ jobs:
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: 'peaceful-plateau-04699'
-          heroku_email: 'bertoluccialan23@gmail.com'
+          heroku_email: 'waldemarnt@gmail.com'
           buildpack: 'https://github.com/zidizei/heroku-buildpack-tsc#v2.0'
