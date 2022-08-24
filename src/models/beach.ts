@@ -3,13 +3,13 @@ import mongoose, { Document, Model, Schema } from 'mongoose';
 export interface IBeach {
   _id?: string;
   name: string;
-  position: BeachPosition;
+  position: GeoPosition;
   lat: number;
   lng: number;
   user: string;
 }
 
-export enum BeachPosition {
+export enum GeoPosition {
   S = 'S',
   E = 'E',
   W = 'W',
