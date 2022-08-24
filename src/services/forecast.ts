@@ -4,6 +4,7 @@ import { AxiosError } from 'axios';
 import { ForecastProcessingInternalError } from './errors/ForecastProcessingInternalError';
 import { IBeach } from '../models/beach';
 import { ITimeForecast } from './types/ITimeForecast';
+import logger from '@src/logger';
 
 export interface IBeachForecast extends Omit<IBeach, 'user'>, ForecastPoint {}
 
@@ -14,6 +15,7 @@ export class Forecast {
     beaches: IBeach[]
   ): Promise<ITimeForecast[]> {
     const pointsWithCorrectSource: IBeachForecast[] = [];
+    logger.info(`Preparing the forecast for ${beaches.length} beaches`);
     try {
       for (const beach of beaches) {
         const points = await this.stormGlass.fetchPoints(beach.lat, beach.lng);
@@ -22,6 +24,7 @@ export class Forecast {
       }
       return this.mapForecastByTime(pointsWithCorrectSource);
     } catch (err) {
+      logger.error(err);
       throw new ForecastProcessingInternalError((err as AxiosError).message);
     }
   }

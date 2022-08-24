@@ -36,7 +36,7 @@ describe('Users functional test', () => {
       );
     });
 
-    it('shoul return 422 there is a validation error', async () => {
+    it('shoul return 422 when there is a validation error', async () => {
       const newUser = {
         email: 'alan@gmail.com',
         password: '123',
@@ -45,7 +45,8 @@ describe('Users functional test', () => {
       expect(response.status).toBe(422);
       expect(response.body).toEqual({
         code: 422,
-        error: 'User validation failed: name: Path `name` is required.',
+        error: 'Unprocessable Entity',
+        message: 'User validation failed: name: Path `name` is required.',
       });
     });
 
@@ -61,7 +62,9 @@ describe('Users functional test', () => {
       expect(response.status).toBe(409);
       expect(response.body).toEqual({
         code: 409,
-        error: 'User validation failed: email: already exists in the database.',
+        error: 'Conflict',
+        message:
+          'User validation failed: email: already exists in the database.',
       });
     });
   });
@@ -94,7 +97,7 @@ describe('Users functional test', () => {
       expect(response.status).toBe(401);
     });
 
-    it.only('should return UNAUTHORIZED if the user is found but the password does not match', async () => {
+    it('should return UNAUTHORIZED if the user is found but the password does not match', async () => {
       const newUser = {
         name: 'Alan',
         email: 'alan@gmail.com',
@@ -105,6 +108,42 @@ describe('Users functional test', () => {
         .post('/users/authenticate')
         .send({ ...newUser, password: '321' });
       expect(response.status).toBe(401);
+    });
+  });
+  describe('When getting user profoile info', () => {
+    it(`should return the token's owner profile information`, async () => {
+      const newUser = {
+        name: 'Alan',
+        email: 'alan@gmail.com',
+        password: '123',
+      };
+      const user = await new User(newUser).save();
+      const token = AuthService.generateToken(user.toJSON());
+      const { status, body } = await global.testRequest
+        .get('/users/me')
+        .set({ 'x-access-token': token });
+
+      expect(status).toBe(200);
+      expect(body).toMatchObject(JSON.parse(JSON.stringify({ user })));
+    });
+    it('should return Not Found when the user is not found', async () => {
+      const newUser = {
+        name: 'Alan',
+        email: 'alan@gmail.com',
+        password: '123',
+      };
+      //create a new user but dont save it
+      const user = new User(newUser);
+      const token = AuthService.generateToken(user.toJSON());
+      const { status, body } = await global.testRequest
+        .get('/users/me')
+        .set({ 'x-access-token': token });
+      expect(status).toBe(404);
+      expect(body).toEqual({
+        code: 404,
+        error: 'Not Found',
+        message: 'User not found!',
+      });
     });
   });
 });
