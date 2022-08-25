@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "ts-node-dev --files src/index.ts | pino-pretty -c",
     "build": "yarn tsc",
-    "start": "yarn build && node dist/src/index.js",
+    "start": "node dist/src/index.js",
     "lint": "eslint ./src ./test --ext .ts",
     "lint:fix": "eslint ./src ./test --ext .ts --fix",
     "test": "yarn test:unit && yarn test:functional",
