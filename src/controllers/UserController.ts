@@ -14,7 +14,7 @@ export class UserController extends BaseController {
       const newUser = await user.save();
       res.status(201).send(newUser);
     } catch (err) {
-      console.log('tá caindo aqui');
+      // console.log('tá caindo aqui');
       this.sendCreateUpdateErrorResponse(res, err);
     }
   }

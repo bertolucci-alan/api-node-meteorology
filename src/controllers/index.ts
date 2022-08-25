@@ -12,16 +12,9 @@ export abstract class BaseController {
     error: mongoose.Error.ValidationError | Error | unknown
   ): Response {
     logger.error(error);
-    console.log(error);
+    // console.log(error);
     if (error instanceof mongoose.Error.ValidationError) {
-      console.log('instancia de mongoose');
       const clientErrors = this.handleClientErrors(error);
-      console.log(
-        ApiError.format({
-          code: clientErrors.code,
-          message: clientErrors.error,
-        })
-      );
 
       return res.status(clientErrors.code).send(
         ApiError.format({
@@ -30,7 +23,6 @@ export abstract class BaseController {
         })
       );
     } else {
-      console.log('erro do servidor');
       return res
         .status(500)
         .send(ApiError.format({ code: 500, message: 'Something went wrong!' }));
@@ -50,7 +42,7 @@ export abstract class BaseController {
     if (duplicatedKindErrors.length) {
       return { code: 409, error: error.message };
     }
-    return { code: 422, error: error.message };
+    return { code: 400, error: error.message };
   }
 
   protected sendErrorResponse(res: Response, apiError: APIError): Response {

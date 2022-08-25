@@ -14,6 +14,7 @@ import { BeachController } from './controllers/BeachController';
 import { UserController } from './controllers/UserController';
 import config from 'config';
 import logger from './logger';
+import { apiErrorValidator } from './middlewares/api-error';
 
 export class SetupServer extends Server {
   constructor(private port = 3333) {
@@ -25,6 +26,7 @@ export class SetupServer extends Server {
     await this.docsSetup();
     this.setupControllers();
     await this.databaseSetup();
+    this.setuErrorHandlers();
   }
 
   private setupExpress(): void {
@@ -39,6 +41,10 @@ export class SetupServer extends Server {
         origin: '*',
       })
     );
+  }
+
+  private setuErrorHandlers(): void {
+    this.app.use(apiErrorValidator);
   }
 
   private setupControllers(): void {
