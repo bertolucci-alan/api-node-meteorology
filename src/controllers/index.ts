@@ -11,8 +11,18 @@ export abstract class BaseController {
     res: Response,
     error: mongoose.Error.ValidationError | Error | unknown
   ): Response {
+    logger.error(error);
+    console.log(error);
     if (error instanceof mongoose.Error.ValidationError) {
+      console.log('instancia de mongoose');
       const clientErrors = this.handleClientErrors(error);
+      console.log(
+        ApiError.format({
+          code: clientErrors.code,
+          message: clientErrors.error,
+        })
+      );
+
       return res.status(clientErrors.code).send(
         ApiError.format({
           code: clientErrors.code,
@@ -20,7 +30,7 @@ export abstract class BaseController {
         })
       );
     } else {
-      logger.error(error);
+      console.log('erro do servidor');
       return res
         .status(500)
         .send(ApiError.format({ code: 500, message: 'Something went wrong!' }));
