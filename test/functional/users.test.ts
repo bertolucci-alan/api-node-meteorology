@@ -37,6 +37,7 @@ describe('Users functional test', () => {
     });
 
     it.skip('should return 422 when there is a validation error', async () => {
+      //teste não rodando, só Deus sabe o porquê
       const newUser = {
         email: 'alan@gmail.com',
         password: '123',
