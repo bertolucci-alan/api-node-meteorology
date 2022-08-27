@@ -1,6 +1,6 @@
 import { AxiosError } from 'axios';
 import * as HTTPUtil from '@src/util/request/request';
-import { ClienteRequestError } from './errors/ClienteRequestError';
+import { ClientRequestError } from './errors/ClientRequestError';
 import { StormGlassResponseError } from './errors/StormGlassReponseError';
 import { ForecastPoint } from './types/ForecastPoint';
 import {
@@ -46,7 +46,7 @@ export class StormGlass {
           }`
         );
       }
-      throw new ClienteRequestError(axiosError.message);
+      throw new ClientRequestError(axiosError.message);
     }
   }
 
