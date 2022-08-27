@@ -8,7 +8,7 @@ import { ITimeForecast } from './types/ITimeForecast';
 import logger from '@src/logger';
 import { Rating } from './rating';
 
-export interface IBeachForecast extends Omit<IBeach, 'user'>, ForecastPoint {}
+export interface IBeachForecast extends Omit<IBeach, 'userId'>, ForecastPoint {}
 
 export class Forecast {
   constructor(

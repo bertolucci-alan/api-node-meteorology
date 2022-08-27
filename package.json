@@ -6,7 +6,7 @@
   "author": "bertolucci-alan <bertoluccialan23@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "ts-node-dev --files src/index.ts | pino-pretty -c",
+    "dev": "ts-node-dev --transpile-only src/index.ts | pino-pretty -c",
     "build": "yarn tsc",
     "start": "node dist/src/index.js",
     "lint": "eslint ./src ./test --ext .ts",

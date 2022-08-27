@@ -1,12 +1,12 @@
-import { Beach, GeoPosition } from '@src/models/beach';
+import { Beach, GeoPosition, IBeach } from '@src/models/beach';
 import stormGlassWeather3HoursFixture from '@test/fixtures/stormGlass_weather_3_hours.json';
 import apiForecastResponse1BeachFixture from '@test/fixtures/api_forecast_1_beach.json';
 import nock from 'nock';
-import { User } from '@src/models/user';
+import { IUser, User } from '@src/models/user';
 import AuthService from '@src/services/auth';
 
 describe('Beach forecast functional tests', () => {
-  const defaultUser = {
+  const defaultUser: IUser = {
     name: 'Alan',
     email: 'alan@gmail.com',
     password: '123',
@@ -17,12 +17,12 @@ describe('Beach forecast functional tests', () => {
     await User.deleteMany({});
     const user = await new User(defaultUser).save();
 
-    const defaultBeach = {
+    const defaultBeach: IBeach = {
       lat: -33.792726,
       lng: 151.289824,
       name: 'Manly',
       position: GeoPosition.E,
-      user: user.id,
+      userId: user.id,
     };
     await new Beach(defaultBeach).save();
     token = AuthService.generateToken(user.toJSON());
