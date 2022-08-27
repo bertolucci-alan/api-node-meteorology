@@ -1,5 +1,5 @@
 import { ForecastPoint } from '@src/clients/types/ForecastPoint';
-import { Beach, GeoPosition, IBeach } from '@src/models/beach';
+import { GeoPosition, IBeach } from '@src/models/beach';
 
 const wavesHeights = {
   ankleToKnee: {
