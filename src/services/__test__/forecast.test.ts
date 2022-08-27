@@ -9,6 +9,7 @@ describe('Forecast Service', () => {
   const mockedStormGlassService = new StormGlass() as jest.Mocked<StormGlass>;
 
   it('should return the forecast for multiple beaches in the same hour with different raings orderd by rating', async () => {
+    //mockando várias chamadas para a api
     mockedStormGlassService.fetchPoints.mockResolvedValueOnce([
       {
         swellDirection: 64.26,
