@@ -17,7 +17,8 @@ const rateLimiter = rateLimit({
   windowMs: 1 * 60 * 1000, //um minuto
   max: 10, //10 requests por minuto
   //chave que será checada, cada ip tem 10 req por minuto:
-  keyGenerator(req: Request, res: Response): string {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  keyGenerator(req: Request, _: Response): string {
     return req.ip;
   },
   //permite alterar o padrão de respostas do rate limit:

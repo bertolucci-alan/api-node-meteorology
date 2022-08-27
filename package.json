@@ -11,7 +11,7 @@
     "start": "node dist/src/index.js",
     "lint": "eslint ./src ./test --ext .ts",
     "lint:fix": "eslint ./src ./test --ext .ts --fix",
-    "test": "yarn lint && yarn style:check && yarn test:unit && yarn test:functional",
+    "test": "yarn lint && yarn test:unit && yarn test:functional",
     "test:functional": "jest --projects ./test --runInBand",
     "test:unit": "jest",
     "style:check": "prettier --check src/**/*.ts test/**/*.ts",
