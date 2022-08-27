@@ -69,12 +69,11 @@ export class Rating {
   }
 
   public getPositionFromLocation(coordinates: number): GeoPosition {
-    if (coordinates >= 310 || (coordinates >= 0 && coordinates < 50))
-      return GeoPosition.N;
-    if (coordinates >= 50 && coordinates < 120) return GeoPosition.E;
-    if (coordinates >= 120 && coordinates < 220) return GeoPosition.S;
-    if (coordinates >= 220 && coordinates < 310) return GeoPosition.W;
-    return GeoPosition.E;
+    if (coordinates < 50) return GeoPosition.N;
+    if (coordinates < 120) return GeoPosition.E;
+    if (coordinates < 220) return GeoPosition.S;
+    if (coordinates < 310) return GeoPosition.W;
+    return GeoPosition.N;
   }
 
   private isWindOffShore(
