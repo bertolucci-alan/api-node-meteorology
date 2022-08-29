@@ -39,6 +39,4 @@ const schema = new mongoose.Schema(
   }
 );
 
-interface BeachModel extends Omit<IBeach, '_id'>, Document {}
-
 export const Beach = mongoose.model<IBeach>('Beach', schema);
